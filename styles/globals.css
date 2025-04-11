@@ -1,8 +1,0 @@
-/* globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply bg-white text-gray-900 font-sans p-6;
-}
