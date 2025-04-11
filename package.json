@@ -1,14 +1,25 @@
-"dependencies": {
-  "next": "13.4.12",
-  "react": "18.2.0",
-  "react-dom": "18.2.0",
-  "framer-motion": "^10.12.16"
-},
-"devDependencies": {
-  "tailwindcss": "^3.3.0",
-  "autoprefixer": "^10.4.14",
-  "postcss": "^8.4.21",
-  "typescript": "^5.3.3",
-  "@types/react": "^18.2.0",
-  "@types/node": "^20.8.10"
+{
+  "name": "assistente-compras",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^10.12.16",
+    "next": "13.4.12",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.3.3"
+  }
 }
