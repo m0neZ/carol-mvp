@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Usuário - {{ user.profile_name or user.whatsapp_id }}{% endblock %}
+
+{% block page_title %}Detalhes do Usuário: {{ user.profile_name or user.whatsapp_id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <h4>Informações do Perfil</h4>
+        <dl class="row">
+            <dt class="col-sm-4">ID Interno</dt>
+            <dd class="col-sm-8">{{ user.id }}</dd>
+
+            <dt class="col-sm-4">WhatsApp ID</dt>
+            <dd class="col-sm-8">{{ user.whatsapp_id }}</dd>
+
+            <dt class="col-sm-4">Telefone</dt>
+            <dd class="col-sm-8">{{ user.phone_number }}</dd>
+
+            <dt class="col-sm-4">Nome (Perfil)</dt>
+            <dd class="col-sm-8">{{ user.profile_name or 'N/A' }}</dd>
+
+            <dt class="col-sm-4">Criado em</dt>
+            <dd class="col-sm-8">{{ user.created_at.strftime("%d/%m/%Y %H:%M:%S") if user.created_at else 'N/A' }}</dd>
+
+            <dt class="col-sm-4">Atualizado em</dt>
+            <dd class="col-sm-8">{{ user.updated_at.strftime("%d/%m/%Y %H:%M:%S") if user.updated_at else 'N/A' }}</dd>
+
+            <dt class="col-sm-4">Preferências de Estilo</dt>
+            <dd class="col-sm-8">{{ user.style_preferences or 'Não definido' }}</dd>
+
+            <dt class="col-sm-4">Faixa de Orçamento</dt>
+            <dd class="col-sm-8">{{ user.budget_range or 'Não definido' }}</dd>
+
+            <dt class="col-sm-4">Categorias Preferidas</dt>
+            <dd class="col-sm-8">{{ user.preferred_categories | join(', ') if user.preferred_categories else 'Não definido' }}</dd>
+
+            <dt class="col-sm-4">Marcas Preferidas</dt>
+            <dd class="col-sm-8">{{ user.brand_preferences | join(', ') if user.brand_preferences else 'Não definido' }}</dd>
+
+            <dt class="col-sm-4">Tamanhos</dt>
+            <dd class="col-sm-8">
+                {% if user.sizes %}
+                    <ul>
+                    {% for key, value in user.sizes.items() %}
+                        <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    Não definido
+                {% endif %}
+            </dd>
+        </dl>
+        <!-- Add Edit Profile Button/Form here if needed -->
+    </div>
+    <div class="col-md-6">
+        <h4>Lista de Desejos ({{ wishlist_items | length }})</h4>
+        {% if wishlist_items %}
+            <ul class="list-group mb-3">
+                {% for item in wishlist_items %}
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">{{ item.product_name }}</h6>
+                        <small class="text-muted">ID: {{ item.product_id }}</small>
+                        {% if item.notes %}<small class="d-block text-muted">Nota: {{ item.notes }}</small>{% endif %}
+                    </div>
+                    <span class="text-muted"><a href="{{ item.product_url }}" target="_blank">Link</a></span>
+                    <!-- Add remove button here -->
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Lista de desejos vazia.</p>
+        {% endif %}
+
+        <h4>Histórico de Conversa (Últimas {{ messages | length }})</h4>
+        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 1rem;">
+            {% for msg in messages %}
+                <p><strong>{{ msg.sender }}:</strong> {{ msg.content }} <small class="text-muted">({{ msg.timestamp.strftime("%d/%m %H:%M") }})</small></p>
+            {% else %}
+                <p>Nenhuma mensagem encontrada.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for("list_users_html") }}" class="btn btn-secondary mt-3">Voltar para Lista de Usuários</a>
+
+{% endblock %}
+

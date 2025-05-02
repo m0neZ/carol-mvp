@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Visão Geral{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Usuários Registrados</h5>
+                <p class="card-text">Gerencie os usuários que interagiram com o ShopperGPT.</p>
+                <a href="{{ url_for("list_users_html") }}" class="btn btn-primary">Ver Usuários</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Métricas (Placeholder)</h5>
+                <p class="card-text">Visualizar estatísticas de uso e desempenho.</p>
+                <a href="#" class="btn btn-secondary disabled">Ver Métricas (Em breve)</a>
+            </div>
+        </div>
+    </div>
+    <!-- Add more cards/widgets for other admin functionalities -->
+</div>
+{% endblock %}
+
