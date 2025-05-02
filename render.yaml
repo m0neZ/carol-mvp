@@ -31,7 +31,7 @@ services:
     autoDeploy: yes # Automatically deploy when pushing to the connected GitHub branch (e.g., main)
 
   # Database Service (PostgreSQL - Free tier available)
-  - type: psql
+  - type: postgres
     name: shoppergpt-db
     region: frankfurt # Use the same region as the web service
     plan: free # Use the free database plan (limited resources)
