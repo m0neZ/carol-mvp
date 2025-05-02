@@ -1,40 +1,40 @@
 # render.yaml - Configuration for deploying ShopperGPT on Render
+# Based on official Render Blueprint Spec: https://render.com/docs/blueprint-spec
 
+# Define the PostgreSQL database first
+databases:
+  - name: shoppergpt-db
+    region: frankfurt # Use the same region as the web service
+    plan: free # Use the free database plan (limited resources)
+    # postgresqlMajorVersion: 14 # Optional: Specify PostgreSQL version if needed
+
+# Define the web service (FastAPI application)
 services:
-  # Web Service (FastAPI application)
   - type: web
     name: shoppergpt-api
-    env: python
-    region: frankfurt # Choose a region close to you or your users, e.g., oregon, frankfurt, singapore
+    runtime: python # Use 'runtime' instead of 'env'
+    region: frankfurt # Match the database region
     plan: free # Use the free instance type
-    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt && python src/db_manager.py" # Install dependencies and initialize DB (if needed)
-    startCommand: "uvicorn src.main:app --host 0.0.0.0 --port $PORT --app-dir /opt/render/project/src/shoppergpt" # Use $PORT provided by Render
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt && python src/db_manager.py" # Install dependencies and initialize DB
+    startCommand: "uvicorn src.main:app --host 0.0.0.0 --port $PORT --app-dir ." # Use $PORT provided by Render, adjust app-dir if needed
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0 # Specify the Python version used
       - key: DATABASE_URL
         fromDatabase:
-          name: shoppergpt-db # Name of the database service defined below
+          name: shoppergpt-db # Name of the database service defined above
           property: connectionString # Use the connection string provided by Render
+      # Secrets - Set these in the Render dashboard Environment section
       - key: OPENAI_API_KEY
-        sync: false # Keep secret, set in Render dashboard
+        sync: false
       - key: WHATSAPP_API_TOKEN
-        sync: false # Keep secret, set in Render dashboard
+        sync: false
       - key: WHATSAPP_PHONE_NUMBER_ID
-        sync: false # Keep secret, set in Render dashboard
+        sync: false
       - key: WHATSAPP_VERIFY_TOKEN
-        sync: false # Keep secret, set in Render dashboard
+        sync: false
       - key: ADMIN_USERNAME
-        sync: false # Keep secret, set in Render dashboard
+        sync: false
       - key: ADMIN_PASSWORD
-        sync: false # Keep secret, set in Render dashboard
+        sync: false
     autoDeploy: yes # Automatically deploy when pushing to the connected GitHub branch (e.g., main)
-
-  # Database Service (PostgreSQL - Free tier available)
-  - type: postgres
-    name: shoppergpt-db
-    region: frankfurt # Use the same region as the web service
-    plan: free # Use the free database plan (limited resources)
-    # postgresqlMajorVersion: 14 # Specify PostgreSQL version if needed, defaults to latest available
-    # diskGiB: 1 # Specify disk size for paid plans
-
